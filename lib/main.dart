@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:test_project/widgets/home_screen.dart';
+import 'package:test_project/widgets/notifications_page.dart';
 //import 'package:test_project/models/message_model.dart';
 import 'package:test_project/widgets/online_users.dart';
+import 'package:test_project/widgets/profile.dart';
 import 'package:test_project/widgets/recent_chats.dart';
+import 'package:test_project/widgets/streams_page.dart';
 
 //Home Screen
 void main() {
@@ -14,6 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(routes: {
       "/": (context) => InitialPage(),
+      "/streams": (context) => StreamsPage(),
+      "/home": (context) => HomeScreen(),
+      "/notifications": (context) => NotificationsPage(),
+      "/profile": (context) => ProfilePage(),
     });
   }
 }
@@ -30,33 +38,49 @@ class InitialPage extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.home),
+              tooltip: 'Home',
               iconSize: 25,
               color: Colors.blueGrey,
-              onPressed: () {},
+              onPressed: () {
+                  Navigator.pushNamed(context, '/home');  
+              },
             ),
             IconButton(
-              icon: Icon(Icons.view_stream),
+              icon: Icon(Icons.live_tv),
+              tooltip: 'Streams',
               iconSize: 25,
               color: Colors.blueGrey,
-              onPressed: () {},
+              onPressed: () {
+                   Navigator.pushNamed(context, '/streams');
+
+              },
             ),
             IconButton(
               icon: Icon(Icons.message),
+              tooltip: 'Meesages',
               iconSize: 25,
               color: Colors.pink,
-              onPressed: () {},
+              onPressed: () {
+                  Navigator.pushNamed(context, '/');
+              },
             ),
             IconButton(
               icon: Icon(Icons.notifications),
+              tooltip: 'Notifications',
               iconSize: 25,
               color: Colors.blueGrey,
-              onPressed: () {},
+              onPressed: () {
+                   Navigator.pushNamed(context, '/notifications'); 
+              },
             ),
             IconButton(
               icon: Icon(Icons.supervised_user_circle),
+              tooltip: 'Profile',
               iconSize: 25,
               color: Colors.blueGrey,
-              onPressed: () {},
+              onPressed: () {
+                 Navigator.pushNamed(context, '/profile');  
+              },
             ),
           ],
         ),

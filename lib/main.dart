@@ -26,7 +26,56 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class InitialPage extends StatelessWidget {
+
+class InitialPage extends StatefulWidget {
+
+  @override
+  _InitialPageState createState() => _InitialPageState();
+}
+
+
+class _InitialPageState extends State<InitialPage> {
+  int pageCounter=0;
+  String text="Meesages";
+
+void changePage(int val){ //sayfalar arası kaydırarak geçiş
+  setState(() {
+     changeText(val);
+    pageCounter=val;
+
+  });
+}
+ void changeText(int index){
+ if(index==0){
+   text="Home";
+ }
+ else if(index==1){
+    text="Streams";
+ }
+ else if(index==2){
+    text="Messages";
+ }
+ else if(index==3){
+    text="Notifications";
+ }
+ else if(index==4){
+    text="Profile";
+ }
+
+ }
+  void bottomTapped(int index) {  //bottomnavbardan tıklayarak geçiş
+    setState(() {
+      changeText(index);
+      pageCounter = index;
+      pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
+  }
+
+  PageController pageController = PageController(
+    initialPage: 2,
+    keepPage: true,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,18 +89,18 @@ class InitialPage extends StatelessWidget {
               icon: Icon(Icons.home),
               tooltip: 'Home',
               iconSize: 25,
-              color: Colors.blueGrey,
+              color:pageCounter==0 ? Colors.pink : Colors.blueGrey,
               onPressed: () {
-                  Navigator.pushNamed(context, '/home');  
+                  bottomTapped(0);  
               },
             ),
             IconButton(
               icon: Icon(Icons.live_tv),
               tooltip: 'Streams',
               iconSize: 25,
-              color: Colors.blueGrey,
+              color:pageCounter==1 ? Colors.pink : Colors.blueGrey,
               onPressed: () {
-                   Navigator.pushNamed(context, '/streams');
+                  bottomTapped(1);
 
               },
             ),
@@ -59,27 +108,27 @@ class InitialPage extends StatelessWidget {
               icon: Icon(Icons.message),
               tooltip: 'Meesages',
               iconSize: 25,
-              color: Colors.pink,
+               color:pageCounter==2 ? Colors.pink : Colors.blueGrey,
               onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                 bottomTapped(2); 
               },
             ),
             IconButton(
               icon: Icon(Icons.notifications),
               tooltip: 'Notifications',
               iconSize: 25,
-              color: Colors.blueGrey,
+               color:pageCounter==3 ? Colors.pink : Colors.blueGrey,
               onPressed: () {
-                   Navigator.pushNamed(context, '/notifications'); 
+                   bottomTapped(3);  
               },
             ),
             IconButton(
               icon: Icon(Icons.supervised_user_circle),
               tooltip: 'Profile',
               iconSize: 25,
-              color: Colors.blueGrey,
+               color:pageCounter==4 ? Colors.pink : Colors.blueGrey,
               onPressed: () {
-                 Navigator.pushNamed(context, '/profile');  
+                 bottomTapped(4);   
               },
             ),
           ],
@@ -95,7 +144,7 @@ class InitialPage extends StatelessWidget {
         ),
         centerTitle: true,
         title: Text(
-          "Messages",
+          text,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -113,27 +162,50 @@ class InitialPage extends StatelessWidget {
               ),
         ],
       ),
-      body: Column(
+      body: PageView(
+        controller: pageController,
+         onPageChanged: (index) {
+        changePage(index);
+      },
         children: <Widget>[
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
-                  ),
-              child: Column(
-                children: <Widget>[
-                  OnlineUsers(),
-                  RecentChats(),
-                ],
-              ),
+        HomeScreen(),
+        StreamsPage(),
+        FirstPage(),
+        NotificationsPage(),
+        ProfilePage(),
+
+      ],),
+    );
+  }
+}
+
+class FirstPage extends StatelessWidget {
+  const FirstPage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+                ),
+            child: Column(
+              children: <Widget>[
+                OnlineUsers(),
+                RecentChats(),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
